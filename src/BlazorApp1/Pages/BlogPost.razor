@@ -1,0 +1,28 @@
+﻿@page "/blogpost"
+@inject HttpClient HttpClient
+
+<PageTitle>BlogPost</PageTitle>
+
+<h1>Blog Post</h1>
+
+@((MarkupString)HTMLContent)
+
+@code {
+   
+    private string HTMLContent { get; set; }
+    [Parameter] 
+    public string MarkdownContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var MarkdownContent = await HttpClient.GetStringAsync("post/2024-05-25-Initial-blog-post-Starwars.md");
+
+        if (!string.IsNullOrEmpty(MarkdownContent))
+        {
+            HTMLContent = Markdig.Markdown.ToHtml(MarkdownContent);
+        }
+       
+    }
+
+
+}
